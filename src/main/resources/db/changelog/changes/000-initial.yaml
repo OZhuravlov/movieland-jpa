@@ -1,0 +1,275 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20190219-01
+      author: AlexanderZ
+      changes:
+      - createSequence:
+          sequenceName: seq_countries
+      - createTable:
+          tableName: countries
+          columns:
+          - column:
+              name: id
+              type: INTEGER
+              constraints:
+                primaryKey: true
+                primaryKeyName: pk_countries
+          - column:
+              name: name
+              type: VARCHAR(255)
+              constraints:
+                nullable: false
+      - addUniqueConstraint:
+          tableName: countries
+          columnNames: name
+          constraintName: un_countries_name
+  - changeSet:
+      id: 20190219-02
+      author: AlexanderZ
+      changes:
+        - createSequence:
+            sequenceName: seq_genres
+        - createTable:
+            tableName: genres
+            columns:
+              - column:
+                  name: id
+                  type: INTEGER
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_genres
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+        - addUniqueConstraint:
+            tableName: genres
+            columnNames: name
+            constraintName: un_genres_name
+  - changeSet:
+      id: 20190219-03
+      author: AlexanderZ
+      changes:
+        - createSequence:
+            sequenceName: seq_users
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: INTEGER
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_users
+              - column:
+                  name: username
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: nickname
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: password
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: sole
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+        - addUniqueConstraint:
+            tableName: users
+            columnNames: email
+            constraintName: un_users_email
+        - addUniqueConstraint:
+            tableName: users
+            columnNames: username
+            constraintName: un_users_username
+  - changeSet:
+      id: 20190219-04
+      author: AlexanderZ
+      changes:
+        - createSequence:
+            sequenceName: seq_movies
+        - createTable:
+            tableName: movies
+            columns:
+              - column:
+                  name: id
+                  type: INTEGER
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_movies
+              - column:
+                  name: name_native
+                  type: VARCHAR(500)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name_russian
+                  type: VARCHAR(500)
+              - column:
+                  name: year_of_release
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: picture_path
+                  type: VARCHAR(4000)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: price
+                  type: FLOAT8
+                  constraints:
+                    nullable: false
+              - column:
+                  name: rating
+                  type: FLOAT8
+        - addUniqueConstraint:
+            tableName: movies
+            columnNames: name_native, year_of_release
+            constraintName: un_movies_name
+  - changeSet:
+      id: 20190219-05
+      author: AlexanderZ
+      changes:
+        - createSequence:
+            sequenceName: seq_reviews
+        - createTable:
+            tableName: reviews
+            columns:
+              - column:
+                  name: id
+                  type: INTEGER
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_reviews
+              - column:
+                  name: movie_id
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_reviews_movies
+                    references: movies(id)
+              - column:
+                  name: user_id
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_reviews_users
+                    references: users(id)
+              - column:
+                  name: text
+                  type: TEXT
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 20190219-06
+      author: AlexanderZ
+      changes:
+        - createSequence:
+            sequenceName: seq_movie_genres
+        - createTable:
+            tableName: movie_genres
+            columns:
+              - column:
+                  name: id
+                  type: INTEGER
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_movie_genres
+              - column:
+                  name: movie_id
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_movie_genres_movies
+                    references: movies(id)
+              - column:
+                  name: genre_id
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_movie_genres_genres
+                    references: genres(id)
+        - addUniqueConstraint:
+            tableName: movie_genres
+            columnNames: movie_id, genre_id
+            constraintName: un_movie_genres
+  - changeSet:
+      id: 20190219-07
+      author: AlexanderZ
+      changes:
+        - createSequence:
+            sequenceName: seq_movie_countries
+        - createTable:
+            tableName: movie_countries
+            columns:
+              - column:
+                  name: id
+                  type: INTEGER
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_movie_countries
+              - column:
+                  name: movie_id
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_movie_countries_movies
+                    references: movies(id)
+              - column:
+                  name: country_id
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_movie_countries_countries
+                    references: genres(id)
+        - addUniqueConstraint:
+            tableName: movie_countries
+            columnNames: movie_id, country_id
+            constraintName: un_movie_countries
+  - changeSet:
+      id: 20190219-08
+      author: AlexanderZ
+      changes:
+        - sqlFile:
+            dbms: postgresql
+            endDelimiter: ";"
+            splitStatements: true
+            path: classpath:db/changelog/changes-sql/000-initial-data.sql
+            relativeToChangelogFile: false
+            stripComments: true
+  - changeSet:
+      id: 20190219-09
+      author: AlexanderZ
+      changes:
+        - sqlFile:
+            dbms: postgresql
+            endDelimiter: ";"
+            splitStatements: true
+            path: classpath:db/changelog/changes-sql/000-initial-post-ddl.sql
+            relativeToChangelogFile: false
+            stripComments: true
+

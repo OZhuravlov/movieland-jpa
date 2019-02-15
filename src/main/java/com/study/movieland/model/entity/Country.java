@@ -14,4 +14,5 @@ public class Country {
     private int id;
     @Column(nullable = false)
     private String name;
+
 }

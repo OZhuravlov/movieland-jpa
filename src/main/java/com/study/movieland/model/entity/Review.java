@@ -1,6 +1,7 @@
 package com.study.movieland.model.entity;
 
 import lombok.Data;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 
@@ -12,8 +13,11 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "review_generator")
     @SequenceGenerator(name = "review_generator", sequenceName = "seq_reviews")
     private int id;
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
     @Column(nullable = false, length = 4000)
     private String text;
     @ManyToOne(optional = false)
     private User user;
+
 }
