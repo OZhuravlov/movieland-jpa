@@ -13,6 +13,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "MOVIES")
+@NamedEntityGraph(name = "Movie.detail", attributeNodes = {@NamedAttributeNode("genres"), @NamedAttributeNode("countries")})
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "movie_generator")
@@ -42,13 +43,13 @@ public class Movie {
     @Type(type = "org.hibernate.type.TextType")
     private String description;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
     @JoinTable(name = "movie_countries",
             joinColumns = {@JoinColumn(name = "movie_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "country_id", referencedColumnName = "id")})
     private volatile Set<Country> countries;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
     @JoinTable(name = "movie_genres",
             joinColumns = {@JoinColumn(name = "movie_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "genre_id", referencedColumnName = "id")})

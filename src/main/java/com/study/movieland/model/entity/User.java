@@ -1,11 +1,13 @@
 package com.study.movieland.model.entity;
 
 import com.study.movieland.model.Role;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "USERS")
 public class User {
